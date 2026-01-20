@@ -36,7 +36,7 @@ sudo apt install meshlab
    colcon build
    ```
 
-1. UR git リポジトリを ros2 ワークスペースの `src` フォルダにクローンします。
+1. Doosan git リポジトリを ros2 ワークスペースの `src` フォルダにクローンします。
    ```
    cd src
    git clone https://github.com/doosan-robotics/doosan-robot2.git -b jazzy
@@ -54,7 +54,7 @@ sudo apt install meshlab
    . install/setup.bash
    ```
 
-3. `display.launch.py` を起動して UR ロボットの設定を確認します (オプション)。
+3. `display.launch.py` を起動して Doosan ロボットの設定を確認します (オプション)。
    ```
    ros2 launch urdf_tutorial display.launch.py model:=$PWD/src/doosan-robot2/dsr_description2/urdf/a0509.urdf
    ```
