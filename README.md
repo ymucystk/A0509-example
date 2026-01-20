@@ -1,4 +1,4 @@
-# `robot-loader` 用の Universal Robots Description の作成
+# `robot-loader` 用の Doosan Robot の作成
 
 以下の手順には、ROS2、blender3.6、meshlab/meshlabserver、および Node.js が必要です。<br>
 ROS2 をインストールするには、公式の ROS2 インストールガイドを参照してください:
