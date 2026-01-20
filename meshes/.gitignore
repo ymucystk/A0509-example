@@ -1,0 +1,6 @@
+*
+!.gitignore
+!template.mlp
+!CONVUM_SGE-M5-N-body-m.bbox
+!CONVUM_SGE-M5-N-suction-m.bbox
+!table.ply

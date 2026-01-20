@@ -1,0 +1,24 @@
+<!DOCTYPE MeshLabDocument>
+<MeshLabProject>
+ <MeshGroup>
+  <MLMesh filename="TEMPLATE.bbox.stl" visible="1" label="TEMPLATE.bbox.stl">
+   <MLMatrix44>
+1 0 0 0 
+0 1 0 0 
+0 0 1 0 
+0 0 0 1 
+</MLMatrix44>
+   <RenderingOption wireWidth="1" wireColor="64 64 64 255" pointColor="131 149 69 255" solidColor="192 192 192 255" pointSize="3" boxColor="234 234 234 255">100001000000000000000000000001010100000010100000000100111011110000001001</RenderingOption>
+  </MLMesh>
+  <MLMesh filename="TEMPLATE.dae" visible="1" label="TEMPLATE.dae">
+   <MLMatrix44>
+1 0 0 0 
+0 1 0 0 
+0 0 1 0 
+0 0 0 1 
+</MLMatrix44>
+   <RenderingOption wireWidth="1" wireColor="64 64 64 255" pointColor="131 149 69 255" solidColor="192 192 192 255" pointSize="3" boxColor="234 234 234 255">100001000000000000000000000001010100000010100000000100111011110000001001</RenderingOption>
+  </MLMesh>
+ </MeshGroup>
+ <RasterGroup/>
+</MeshLabProject>

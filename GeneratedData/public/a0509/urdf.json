@@ -1,0 +1,314 @@
+{
+  "joint_1": {
+    "$": {
+      "name": "joint_1",
+      "type": "revolute"
+    },
+    "parent": {
+      "$": {
+        "link": "base_link"
+      }
+    },
+    "child": {
+      "$": {
+        "link": "link_1"
+      }
+    },
+    "axis": {
+      "$": {
+        "xyz": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "limit": {
+      "$": {
+        "effort": 194,
+        "lower": -6.2832,
+        "upper": 6.2832,
+        "velocity": 3.1416
+      }
+    },
+    "dynamics": {
+      "$": {
+        "friction": "0"
+      }
+    },
+    "origin": {
+      "$": {
+        "xyz": [
+          0,
+          0,
+          0.1555
+        ],
+        "rpy": [
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "joint_2": {
+    "$": {
+      "name": "joint_2",
+      "type": "revolute"
+    },
+    "parent": {
+      "$": {
+        "link": "link_1"
+      }
+    },
+    "child": {
+      "$": {
+        "link": "link_2"
+      }
+    },
+    "axis": {
+      "$": {
+        "xyz": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "limit": {
+      "$": {
+        "effort": 194,
+        "lower": -6.2832,
+        "upper": 6.2832,
+        "velocity": 3.1416
+      }
+    },
+    "dynamics": {
+      "$": {
+        "friction": "0"
+      }
+    },
+    "origin": {
+      "$": {
+        "xyz": [
+          0,
+          0,
+          0
+        ],
+        "rpy": [
+          -1.5710000000042246,
+          0.00020367320087886793,
+          -1.5707962853121218
+        ]
+      }
+    }
+  },
+  "joint_3": {
+    "$": {
+      "name": "joint_3",
+      "type": "revolute"
+    },
+    "parent": {
+      "$": {
+        "link": "link_2"
+      }
+    },
+    "child": {
+      "$": {
+        "link": "link_3"
+      }
+    },
+    "axis": {
+      "$": {
+        "xyz": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "limit": {
+      "$": {
+        "effort": 163,
+        "lower": -2.7925,
+        "upper": 2.7925,
+        "velocity": 3.1416
+      }
+    },
+    "dynamics": {
+      "$": {
+        "friction": "0"
+      }
+    },
+    "origin": {
+      "$": {
+        "xyz": [
+          0.409,
+          0,
+          0
+        ],
+        "rpy": [
+          0,
+          0,
+          1.571
+        ]
+      }
+    }
+  },
+  "joint_4": {
+    "$": {
+      "name": "joint_4",
+      "type": "revolute"
+    },
+    "parent": {
+      "$": {
+        "link": "link_3"
+      }
+    },
+    "child": {
+      "$": {
+        "link": "link_4"
+      }
+    },
+    "axis": {
+      "$": {
+        "xyz": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "limit": {
+      "$": {
+        "effort": 50,
+        "lower": -6.2832,
+        "upper": 6.2832,
+        "velocity": 6.2832
+      }
+    },
+    "dynamics": {
+      "$": {
+        "friction": "0"
+      }
+    },
+    "origin": {
+      "$": {
+        "xyz": [
+          0,
+          -0.367,
+          0
+        ],
+        "rpy": [
+          1.571,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "joint_5": {
+    "$": {
+      "name": "joint_5",
+      "type": "revolute"
+    },
+    "parent": {
+      "$": {
+        "link": "link_4"
+      }
+    },
+    "child": {
+      "$": {
+        "link": "link_5"
+      }
+    },
+    "axis": {
+      "$": {
+        "xyz": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "limit": {
+      "$": {
+        "effort": 50,
+        "lower": -6.2832,
+        "upper": 6.2832,
+        "velocity": 6.2832
+      }
+    },
+    "dynamics": {
+      "$": {
+        "friction": "0"
+      }
+    },
+    "origin": {
+      "$": {
+        "xyz": [
+          0,
+          0,
+          0
+        ],
+        "rpy": [
+          -1.571,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "joint_6": {
+    "$": {
+      "name": "joint_6",
+      "type": "revolute"
+    },
+    "parent": {
+      "$": {
+        "link": "link_5"
+      }
+    },
+    "child": {
+      "$": {
+        "link": "link_6"
+      }
+    },
+    "axis": {
+      "$": {
+        "xyz": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "limit": {
+      "$": {
+        "effort": 50,
+        "lower": -6.2832,
+        "upper": 6.2832,
+        "velocity": 6.2832
+      }
+    },
+    "dynamics": {
+      "$": {
+        "friction": "0"
+      }
+    },
+    "origin": {
+      "$": {
+        "xyz": [
+          0,
+          -0.124,
+          0
+        ],
+        "rpy": [
+          1.571,
+          0,
+          0
+        ]
+      }
+    }
+  }
+}
