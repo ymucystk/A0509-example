@@ -329,6 +329,7 @@ npx copy-assets
 pnpm build
 pnpm dev
 ```
+<img src="./image.png" width="500">
 
 ## コライダーの形状調整
 
