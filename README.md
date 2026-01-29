@@ -77,6 +77,7 @@ sudo apt install meshlab
    rm -rf robot-assets
    ```
    ```
+   chmod u+x clone.sh
    ./clone.sh
    pnpm i yargs
    ```
