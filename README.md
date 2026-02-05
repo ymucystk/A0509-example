@@ -77,6 +77,7 @@ sudo apt install meshlab
    rm -rf robot-assets
    ```
    ```
+   chmod u+x clone.sh
    ./clone.sh
    pnpm i yargs
    ```
@@ -133,7 +134,7 @@ sudo apt install meshlab
     <!--`CONVUM_SGE-M5-N-body-m.bbox` `CONVUM_SGE-M5-N-suction-m.bbox` `table.ply` `template.mlp` をコピーします。-->
     `table.ply` `template.mlp` を`meshes` フォルダにコピーします。
     ```
-    cp ../meshes_org/table.ply ./
+    cp ../meshes_org/table1000.ply ./table.ply
     cp ../meshes_org/template.mlp ./
     ```
     ```
@@ -193,11 +194,11 @@ Doosan Robotics ロボットは単純な形状のリンクを持っているた�
    cd meshes/
    ../s/boundingBox.sh *.dae
    ```
-   これにより、各 DAE ファイルの `.bbox` ファイルが作成されます。
+   これにより、各 DAE ファイルの バウンディングボックスファイル(`.bbox`)が作成されます。
 
-2. 必要に応じてバウンディングボックスファイルを編集して、よりタイトにします
+2. 必要に応じてバウンディングボックスファイル(`.bbox`)を編集して、よりタイトにします。
 
-3. バウンディングボックスファイルからコライダー用のコライダーファイル (STL ファイル、PLY ファイル、glTF ファイル) を作成します。
+3. バウンディングボックスファイル(`.bbox`)からコライダー用のコライダーファイル (STL ファイル、PLY ファイル、glTF ファイル) を作成します。
    ```
    ../s/createBboxAll.sh
    ```
@@ -223,19 +224,13 @@ Doosan Robotics ロボットは単純な形状のリンクを持っているた�
    ```
    [
       [ "table.ply", "A0509_0_0.bbox.ply" ],
-      [ "A0509_1_0.bbox.ply" ],
-      [ "A0509_1_1.bbox.ply" ],
-      [ "A0509_1_2.bbox.ply" ],
-      [ "A0509_2_0.bbox.ply" ],
-      [ "A0509_2_1.bbox.ply" ],
-      [ "A0509_2_2.bbox.ply" ],
-      [ "A0509_3_0.bbox.ply" ],
-      [ "A0509_3_1.bbox.ply" ],
-      [ "A0509_4_0.bbox.ply" ],
-      [ "A0509_4_1.bbox.ply" ],
-      [ "A0509_5_0.bbox.ply" ],
-      [ "A0509_5_1.bbox.ply" ],
-      [ "A0509_6_0.bbox.ply" ]
+      [ "A0509_1_0.bbox.ply", "A0509_1_1.bbox.ply", "A0509_1_2.bbox.ply" ],
+      [ "A0509_2_0.bbox.ply", "A0509_2_1.bbox.ply", "A0509_2_2.bbox.ply" ],
+      [ "A0509_3_0.bbox.ply", "A0509_3_1.bbox.ply" ],
+      [ "A0509_4_0.bbox.ply", "A0509_4_1.bbox.ply" ],
+      [ "A0509_5_0.bbox.ply", "A0509_5_1.bbox.ply" ],
+      [ "A0509_6_0.bbox.ply" ],
+      [  ]
    ]
    ```
 
@@ -247,7 +242,13 @@ Doosan Robotics ロボットは単純な形状のリンクを持っているた�
    ```
    mv output.json shapes.json
    ```
-   これで、A0509 ロボットのコライダーを定義する `shapes.json` ファイルができました。
+   これで、A0509 ロボットのコライダーを定義する `shapes.json` ファイルができました。<br>
+   スケールを合わせるため`shapes.json`内の数値を1/1000にします。
+   ```
+   node ../scale1000.js
+   cp shapes-a1000th.json shapes.json
+   rm -rf shapes-a1000th.json
+   ```
 
 8. リンク間の衝突検出をテストするための `testPairs.json` ファイルを作成します。<br>
    どのリンクペアを衝突テストすべきかを自動的に判断するのは難しいため、このファイルは手書きです。<br>
