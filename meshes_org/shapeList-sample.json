@@ -1,0 +1,12 @@
+[
+  [ "A0509_0_0.bbox.ply", "table.ply" ], 
+  [ "A0509_1_0.bbox.ply", "A0509_1_1.bbox.ply", "A0509_1_2.bbox.ply" ],
+  [ "A0509_2_0.bbox.ply", "A0509_2_1.bbox.ply", "A0509_2_2.bbox.ply" ],
+  [ "A0509_3_0.bbox.ply", "A0509_3_1.bbox.ply" ],
+  [ "A0509_4_0.out/output_parts/convex_00from0to1-inflated.ply",
+    "A0509_4_0.out/output_parts/convex_00from2to3-inflated.ply",
+    "A0509_4_1.bbox.ply" ],
+  [ "A0509_5_0.bbox.ply", "A0509_5_1.bbox.ply" ],
+  [ "A0509_6_0.bbox.ply" ],
+  [ ]
+]
