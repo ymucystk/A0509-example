@@ -51,7 +51,7 @@ sudo apt install meshlab
    ```
    source /opt/ros/jazzy/setup.bash
    colcon build --packages-select dsr_msgs2 dsr_description2 dsr_controller2 dsr_hardware2
-   . install/setup.bash
+   source install/setup.bash
    ```
 
 3. `display.launch.py` を起動して Doosan ロボットの設定を確認します (オプション)。
