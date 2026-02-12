@@ -41,7 +41,7 @@ ver.3.6が必要でver.4は使えない。
    * `pymeshlab`  
      ```
      python3 -m venv ~/venv
-     source ~/venv/vin/activate
+     source ~/venv/bin/activate
      pip install pymeshlab
      ```
 1. `meshes`ディレクトリは既に作成済なはず。`A0509_4_0.dae`だけ形が悪い
@@ -52,8 +52,9 @@ ver.3.6が必要でver.4は使えない。
 2. meshをdecimateして頂点の数を減らす。
    今回は不要だったが、場合によってはパラメータの調整が必要になる。
    Doosanの場合daeが実際には1mm単位になっているので`--scale 0.001`必要。
+   `A0509_4_0.out`フォルダに`stl`ファイルを出力する。
    ```
-   blender -b -P ../s/blender_decimate.py  -- --input A0509_4_0.dae --output A0509_4_0.out/ --scale 0.001
+   $BLENDER -b -P ../s/blender_decimate.py  -- --input A0509_4_0.dae --output A0509_4_0.out/ --scale 0.001
    ```
 3. 
     ```
@@ -69,7 +70,7 @@ ver.3.6が必要でver.4は使えない。
     ```
 6. 凸多面体に分解する(`CoACD`の`main`のpathは適当にする)
     ```
-    ~/Test/CoACD/build/main -i step03_decimated.obj -o step03_decimated.wrl
+    ~/CoACD/build/main -i step03_decimated.obj -o step03_decimated.wrl
     ```
 7. 凸分解結果を目視確認する
     ```
@@ -77,7 +78,7 @@ ver.3.6が必要でver.4は使えない。
     ```
 8. 凸分解結果を凸多面体毎に別々のファイルにする
     ```
-    blender -b -P ../../s/split_CoACD_wrl.py 
+    $BLENDER -b -P ../../s/split_CoACD_wrl.py 
     ```
 9. どのようにバラバラになったかパーツ毎に表示・非表示にして目視確認する
     ```
@@ -91,10 +92,10 @@ ver.3.6が必要でver.4は使えない。
     上記`meshlab`での目視確認の結果で適当に組み合わせる。この数を減らすと計算速度の
 	向上が期待できる　
 	```
-	blender -b -P ../../../s/blender_convex_hull_multi.py -- convex_000.ply convex_001.ply convex_00from0to1.stl
+	$BLENDER -b -P ../../../s/blender_convex_hull_multi.py -- convex_000.ply convex_001.ply convex_00from0to1.stl
 	```
 	```
-	blender -b -P ../../../s/blender_convex_hull_multi.py -- convex_002.ply convex_003.ply convex_00from2to3.stl
+	$BLENDER -b -P ../../../s/blender_convex_hull_multi.py -- convex_002.ply convex_003.ply convex_00from2to3.stl
 	```
 13. 凸多面体を少し膨らませる計算(`inflate_ply.py`)のためASCII PLY形式に変換
 	```

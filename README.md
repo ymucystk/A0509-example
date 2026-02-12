@@ -42,15 +42,14 @@ sudo apt install meshlab
    git clone https://github.com/doosan-robotics/doosan-robot2.git -b jazzy
    apt-get update
    rosdep update
-   rosdep install -y -i --from-paths ./doosan-robot2/dsr_hardware2/ ./doosan-robot2/dsr_msgs2/
-   ./doosan-robot2/dsr_controller2/ ./doosan-robot2/dsr_description2/
+   rosdep install -y -i --from-paths ./doosan-robot2/dsr_hardware2/ ./doosan-robot2/dsr_msgs2/ ./doosan-robot2/dsr_controller2/ ./doosan-robot2/dsr_description2/
    cd -
    ```
 
 2. ros2 ワークスペースをビルドします。
    ```
    source /opt/ros/jazzy/setup.bash
-   colcon build --packages-select dsr_msgs2 dsr_description2 dsr_controller2 dsr_hardware2
+   colcon build --packages-select dsr_msgs2 dsr_description2 dsr_common2 dsr_controller2 dsr_hardware2
    source install/setup.bash
    ```
 
