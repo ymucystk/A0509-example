@@ -1,5 +1,7 @@
 # STLやdaeで定義されている形状ベースでの干渉チェック用collider作成
 
+**★★★`README.md`のコライダー情報作成の後で作業可能★★★**
+
 Doosan A0509の第4リンクは形がストレートでないため、bounding boxベースで
 colliderを作成すると適切な形状ができない。(Unitree G1等も同様)
 
@@ -146,6 +148,19 @@ ver.3.6が必要でver.4は使えない。
 	```
 	vi shapeList.json
 	```
+	`shapeList.json`の記述例
+	```
+	[
+		[ "table.ply", "A0509_0_0.bbox.ply" ],
+		[ "A0509_1_0.bbox.ply", "A0509_1_1.bbox.ply", "A0509_1_2.bbox.ply" ],
+		[ "A0509_2_0.bbox.ply", "A0509_2_1.bbox.ply", "A0509_2_2.bbox.ply" ],
+		[ "A0509_3_0.bbox.ply", "A0509_3_1.bbox.ply" ],
+		[ "A0509_4_0.out/output_parts/convex_00from0to1-inflated.ply", "A0509_4_0.out/output_parts/convex_00from2to3-inflated.ply", "A0509_4_1.bbox.ply" ],
+		[ "A0509_5_0.bbox.ply", "A0509_5_1.bbox.ply" ],
+		[ "A0509_6_0.bbox.ply" ],
+		[  ]
+	]
+	```
 24. ASCII PLY形式の各凸多面体のcolliderをまとめて`shapes.json`として使用可能な
 	`output.json`を作る。この時URDFに記述してある必要な座標変換を施している
 	```
@@ -159,7 +174,7 @@ ver.3.6が必要でver.4は使えない。
 	コピー先ディレクトリは適宜変更する。
 	```
 	cp output.json ../GeneratedData/public/a0509/shapes.json 
-	cp testPairs.json ../GeneratedData/public/a0509/
+	cp ../testPairs.json ../GeneratedData/public/a0509/
 	```
 	この2個のファイルがあれば、干渉チェックは動く。collider表示用のglTF作成に関しては
 	省略
