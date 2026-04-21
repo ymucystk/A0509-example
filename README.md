@@ -1,4 +1,148 @@
 # `robot-loader` 用の Doosan Robot の作成
+## urdfファイルの生成手順
+```bash
+# a0509用のデータのリポジトリがros2-jazzy対応なのでubuntu24.04 ros jazzyの環境を準備する。
+cd ~
+docker pull ros:jazzy-ros-base
+docker run --net host --ipc host --name a0509_robot -it ros:jazzy-ros-base
+
+sudo apt update
+sudo apt install -y ros-dev-tools
+sudo apt install -y ros-jazzy-desktop-full
+
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws
+colcon build
+
+cd src
+# a0509用のデータのリポジトリをクローン
+git clone https://github.com/doosan-robotics/doosan-robot2.git -b jazzy
+cd ..
+
+rosdep update
+rosdep install --from-paths src --ignore-src -r -y
+
+source /opt/ros/jazzy/setup.bash
+colcon build
+. install/setup.bash
+
+# xacroファイルからurdfファイルの生成
+xacro `ros2 pkg prefix dsr_description2`/share/dsr_description2/xacro/a0509.urdf.xacro color:=white > a0509_robot.urdf
+```
+## robot-loader用ファイルの生成手順
+```bash
+cd ~
+wget https://download.blender.org/release/Blender3.6/blender-3.6.23-linux-x64.tar.xz
+tar -xvf blender-3.6.23-linux-x64.tar.xz
+export BLENDER=~/blender-3.6.23-linux-x64/blender
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+
+# robot-loader用データ生成ツールのクローンと設定
+git clone https://github.com/ymucystk/robot-loader-example.git
+cd ~/robot-loader-example
+chmod u+x clone.sh
+./clone.sh
+
+# ros2で生成したurdfファイルをコピー
+cp ~/ros2_ws/a0509_robot.urdf ./
+
+# nodejsと必要なコンポーネントのインストール
+apt install -y nodejs npm
+npm install xml2js @aitodotai/json-stringify-pretty-compact
+
+# URDF ツリーを個別のチェーンに分割
+./a/splitUrdfTree.sh a0509_robot.urdf
+
+ls -l
+# 上記で生成されたchain_X.jsonの内容を確認し、ikで制御するユニットのみが定義されたファイルを選択する。
+./a/extract-joint-and-link-tag.sh chain_0.urdf
+# chain_X_.jsonファイルより、ikで制御するユニットの範囲（from to）以外をurdfmap.jsonから削除する。
+./a/cut-joint-map.sh urdfmap.json --from base_link --to link_6
+# urdf.jsonを使用してlinkmap.jsonを再生成する。
+./a/extract-joint-and-link-tag.sh chain_0.urdf -j urdfmap_cut.json
+
+# 可視化データの生成
+Meshes=(`grep filename linkmap.json |sed 's/^\s*//'| sed -e 's/^[^:]*:\s*//' -e 's/"//g' -e 's/,//'|sort -u |grep -v collision`);for path in "${Meshes[@]}"; do echo $path; done
+
+mkdir -p meshes
+cd meshes
+cp ../meshes_org/table1000.ply ./table.ply
+cp ../meshes_org/template.mlp ./
+
+DSRDir=`ros2 pkg prefix dsr_description2`/share/dsr_description2
+
+# メッシュファイルへのパスの作成
+for path in "${Meshes[@]}"; do path=`echo $path | sed 's|^package://dsr_description2/||'`; ln -s $DSRDir/$path .; done
+# gltfファイルの生成
+for file in *.STL *.stl *.DAE *.dae; do ../a/convert-to-gltf.sh "$file"; done
+cd ..
+
+./a/json-pretty-compact.sh update-stub.json -o update.json -c 90
+
+# robot-loader用データ
+mkdir -p ./public/a0509
+cp urdfmap_cut.json ./public/a0509/urdf.json
+cp linkmap.json ./public/a0509/linkmap.json
+cp update.json ./public/a0509/update.json
+cp -r meshes/out/*.* ./public/a0509/
+
+```
+## コライダー情報ファイルの生成手順
+```bash
+# xvfbを使うのでnodejsをバージョンアップ
+cd ~
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+sudo apt install -y meshlab xvfb
+npm install @loaders.gl/core @loaders.gl/ply three @math.gl/types yargs
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+export Blender=~/blender-3.6.23-linux-x64/blender
+# 疑似ディスプレイの設定
+export DISPLAY=:1
+nohup Xvfb -ac ${DISPLAY} -screen 0 1280x780x24 &
+
+cd ~/robot-loader-example/meshes
+
+# bboxファイルの生成
+../s/boundingBox.sh *.dae
+# コライダーファイルの生成
+../s/createBboxAll.sh
+# shapeList.json ファイルの生成
+../s/create_shapelist.sh *.bbox.ply > shapeList.json
+
+# shapeList.json の編集
+echo -e '[\n  [ "table.ply", "A0509_0_0.bbox.ply" ],\n  [ "A0509_1_0.bbox.ply", "A0509_1_1.bbox.ply", "A0509_1_2.bbox.ply" ],\n  [ "A0509_2_0.bbox.ply", "A0509_2_1.bbox.ply", "A0509_2_2.bbox.ply" ],\n  [ "A0509_3_0.bbox.ply", "A0509_3_1.bbox.ply" ],\n  [ "A0509_4_0.bbox.ply", "A0509_4_1.bbox.ply" ],\n  [ "A0509_5_0.bbox.ply", "A0509_5_1.bbox.ply" ],\n  [ "A0509_6_0.bbox.ply" ],\n  [  ]\n]' > shapeList.json
+
+# shapes.jsonファイルの生成
+../s/ply_loader.js shapeList.json ../linkmap.json
+mv output.json shapes.json
+node ../scale1000.js
+cp shapes-a1000th.json shapes.json
+rm -rf shapes-a1000th.json
+
+# testPairs.jsonファイルの生成
+echo -e '[\n  [0,2],[0,3],[0,4],[0,5],[0,6],[0,7],\n  [1,3],[1,4],[1,5],[1,6],[1,7],\n  [2,4],[2,5],[2,6],[2,7],\n  [3,5],[3,6],[3,7]\n]' > ../testPairs.json
+
+cp ./shapes.json ../public/a0509/
+cp ../testPairs.json ../public/a0509/
+
+# gltfファイルの生成
+for file in *.bbox.stl; do ../a/convert-to-gltf.sh "$file"; done
+
+cd out
+# gltfファイルに色と不透明度を追加
+for f in *.bbox.gltf; do node ../../s/set-gltf-color.mjs "$f" --color '#ffff00' --opacity 0.2; done
+cd ../..
+
+# robot-loader用データ
+cp -r meshes/out/*.bbox.* ./public/a0509/
+
+```
+
+## 以下、旧版の手順書
 
 以下の手順には、ROS2、blender3.6、meshlab/meshlabserver、および Node.js が必要です。<br>
 ROS2 をインストールするには、公式の ROS2 インストールガイドを参照してください:
@@ -40,16 +184,15 @@ sudo apt install meshlab
    ```
    cd src
    git clone https://github.com/doosan-robotics/doosan-robot2.git -b jazzy
-   apt-get update
    rosdep update
-   rosdep install -y -i --from-paths ./doosan-robot2/dsr_hardware2/ ./doosan-robot2/dsr_msgs2/ ./doosan-robot2/dsr_controller2/ ./doosan-robot2/dsr_description2/
+   rosdep install --from-paths src --ignore-src -r -y
    cd -
    ```
 
 2. ros2 ワークスペースをビルドします。
    ```
    source /opt/ros/jazzy/setup.bash
-   colcon build --packages-select dsr_msgs2 dsr_description2 dsr_common2 dsr_controller2 dsr_hardware2
+   colcon build
    source install/setup.bash
    ```
 
@@ -72,8 +215,6 @@ sudo apt install meshlab
    ```
    ```
    cd <this_working_directory>
-   rm -rf gjk_worker
-   rm -rf robot-assets
    ```
    ```
    chmod u+x clone.sh
